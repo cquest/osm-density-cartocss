@@ -1,0 +1,121 @@
+{
+  "bounds": [
+    -180,
+    -85.0511,
+    180,
+    85.0511
+  ],
+  "center": [
+    13.5,
+    48.6,
+    6
+  ],
+  "format": "png8",
+  "interactivity": false,
+  "minzoom": 0,
+  "maxzoom": 22,
+  "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+  "Stylesheet": [
+    "style.mss"
+  ],
+  "Layer": [
+    {
+      "geometry": "unknown",
+      "extent": [
+        -179.99999692067183,
+        -85.051,
+        179.99999692067183,
+        85.051
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT box, floor(10*log(count(*)+1)) AS nb\n FROM planet_osm_point\n  JOIN\n   (SELECT ST_setSRID(ST_Makebox2D(ST_MakePoint(st_xmin(!bbox!)+x*!pixel_width!, st_ymin(!bbox!)+!pixel_height!*y),ST_MakePoint(st_xmin(!bbox!)+(x+1)*!pixel_width!,st_ymin(!bbox!)+!pixel_height!*(y+1))),900913) AS box\n    FROM\n     (SELECT generate_series(0,255) AS x) AS h,\n       (SELECT generate_series(0,255) AS y) AS v) AS b ON (way && b.box) group by b.box) AS density",
+        "key_field": "",
+        "geometry_field": "box",
+        "extent_cache": "custom",
+        "extent": "-20037508,-20037508,20037508,20037508",
+        "dbname": "osm",
+        "host": "localhost",
+        "user": "fr",
+        "password": "m4d31nfr4nc3"
+      },
+      "id": "density_points",
+      "class": "",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "density_points"
+    },
+    {
+      "geometry": "unknown",
+      "extent": [
+        -179.99999692067183,
+        -85.051,
+        179.99999692067183,
+        85.051
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT box, floor(10*log(count(*)+1)) AS nb\n FROM planet_osm_polygon\n  JOIN\n   (SELECT ST_setSRID(ST_Makebox2D(ST_MakePoint(st_xmin(!bbox!)+x*!pixel_width!, st_ymin(!bbox!)+!pixel_height!*y),ST_MakePoint(st_xmin(!bbox!)+(x+4)*!pixel_width!,st_ymin(!bbox!)+!pixel_height!*(y+4))),900913) AS box\n    FROM\n     (SELECT generate_series(0,255,4) AS x) AS h,\n       (SELECT generate_series(0,255,4) AS y) AS v) AS b ON (way && b.box AND ST_Intersects(way,box)) group by b.box) AS density",
+        "key_field": "",
+        "geometry_field": "box",
+        "extent_cache": "custom",
+        "extent": "-20037508,-20037508,20037508,20037508",
+        "dbname": "osm",
+        "host": "localhost",
+        "user": "fr",
+        "password": "m4d31nfr4nc3"
+      },
+      "id": "density_polygons",
+      "class": "",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "density_polygons"
+    },
+    {
+      "geometry": "unknown",
+      "extent": [
+        -179.99999692067183,
+        -85.051,
+        179.99999692067183,
+        85.051
+      ],
+      "Datasource": {
+        "type": "postgis",
+        "table": "(SELECT box, floor(7*log(count(*)+1)) AS nb\n FROM planet_osm_line\n  JOIN\n   (SELECT ST_setSRID(ST_Makebox2D(ST_MakePoint(st_xmin(!bbox!)+x*!pixel_width!, st_ymin(!bbox!)+!pixel_height!*y),ST_MakePoint(st_xmin(!bbox!)+(x+2)*!pixel_width!,st_ymin(!bbox!)+!pixel_height!*(y+2))),900913) AS box\n    FROM\n     (SELECT generate_series(0,255,2) AS x) AS h,\n       (SELECT generate_series(0,255,2) AS y) AS v) AS b ON (way && b.box AND ST_Intersects(way,box)) group by b.box) AS density",
+        "key_field": "",
+        "geometry_field": "box",
+        "extent_cache": "custom",
+        "extent": "-20037508,-20037508,20037508,20037508",
+        "dbname": "osm",
+        "host": "localhost",
+        "user": "fr",
+        "password": "m4d31nfr4nc3"
+      },
+      "id": "density_lines",
+      "class": "",
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {},
+      "name": "density_lines"
+    },
+    {
+      "id": "countries",
+      "name": "countries",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "geometry": "polygon",
+      "Datasource": {
+        "file": "http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.4.0/cultural/10m-admin-0-countries.zip",
+        "type": "shape"
+      },
+      "status": "off"
+    }
+  ],
+  "scale": 1,
+  "metatile": 1,
+  "_basemap": "",
+  "name": "",
+  "description": "",
+  "attribution": ""
+}
